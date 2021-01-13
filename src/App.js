@@ -26,7 +26,6 @@ function App() {
   console.log(user);
   return (
     <div className="App">
-      <header></header>
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
     </div>
   );

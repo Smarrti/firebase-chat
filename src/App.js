@@ -41,7 +41,7 @@ const SignIn = () => {
 
 const SignOut = () => {
   return auth.currentUser && (
-    <button onClick={() => auth.signOut()}>Sign Out</button>
+    <button onClick={() => auth.signOut()} className="signout">Sign Out</button>
   )
 }
 
@@ -72,7 +72,9 @@ const ChatRoom = () => {
 
   return (
     <>
-      <SignOut />
+      <header>
+        <SignOut />
+      </header>
       <main>
         {
           messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>)

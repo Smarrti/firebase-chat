@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -47,12 +47,14 @@ const SignOut = () => {
 
 const ChatRoom = () => {
   const messagesRef = firestore.collection('messages');
-  const query = messagesRef.orderBy('createdAt').limit(25);
+  const query = messagesRef.orderBy('createdAt');
 
   const [ messages ] = useCollectionData(query, { idField: 'id' })
   
   const [ formValue, setFormValue ] = useState('');
-  const scrollDown = useRef();
+  const scrollDownRef = useRef();
+
+  useEffect(() => scrollDownRef.current.scrollIntoView({ behavior: 'smooth' }), [messages]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -66,7 +68,7 @@ const ChatRoom = () => {
       photoURL
     })
 
-    scrollDown.current.scrollIntoView({ behavior: 'smooth' });
+    scrollDownRef.current.scrollIntoView({ behavior: 'smooth' });
     setFormValue('');
   }
 
@@ -79,7 +81,7 @@ const ChatRoom = () => {
         {
           messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>)
         }
-        <div ref={scrollDown}></div>
+        <div ref={scrollDownRef}></div>
       </main>
       <form onSubmit={sendMessage}>
         <input value={formValue} onChange={(e) => setFormValue(e.target.value)} />
